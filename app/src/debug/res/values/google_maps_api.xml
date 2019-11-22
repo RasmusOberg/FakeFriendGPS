@@ -20,5 +20,7 @@
     Once you have your key (it starts with "AIza"), replace the "google_maps_key"
     string in this file.
     -->
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBR3mdVJOYOzjCLoB-eg_J_rfDb_qMIsx8</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBneydWVp_YyzlY-7Ha_mDGbcX0Tx2Xj4g</string>
+    <!--key for mac = AIzaSyBneydWVp_YyzlY-7Ha_mDGbcX0Tx2Xj4g
+        key for pc = AIzaSyBR3mdVJOYOzjCLoB-eg_J_rfDb_qMIsx8 -->
 </resources>
