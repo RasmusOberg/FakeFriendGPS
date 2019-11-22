@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">FakeFriendGPS</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="show_group_btn">Show group on map!</string>
+    <string name="group_1">Group 1</string>
+    <string name="group_2">Group 2</string>
+    <string name="group_3">Group 3</string>
+    <string name="leave_group_btn">Leave group</string>
+</resources>

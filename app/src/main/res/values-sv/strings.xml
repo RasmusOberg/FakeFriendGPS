@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FakeFriendGPS</string>
+    <string name="title_activity_maps">Karta</string>
+    <string name="show_group_btn">Visa grupp på kartan!</string>
+    <string name="group_1">Grupp 1</string>
+    <string name="group_2">Grupp 2</string>
+    <string name="group_3">Grupp 3</string>
+    <string name="leave_group_btn">Lämna grupp</string>
+</resources>
