@@ -35,6 +35,7 @@ public class JoinGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new JSONAsyncTask().execute(jsonaddress);
+                Log.d(TAG, "onClick: ");
             }
         });
         group1 = findViewById(R.id.group1);
@@ -128,6 +129,7 @@ public class JoinGroupActivity extends AppCompatActivity {
                 }
                 bundle.putParcelableArrayList("Group", group);
                 intent.putExtra("Bundle", bundle);
+                Log.d(TAG, "onPostExecute: KLAR");
                 setResult(RESULT_OK, intent);
                 finish();
 
