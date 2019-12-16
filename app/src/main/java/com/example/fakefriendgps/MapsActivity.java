@@ -57,7 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), JoinGroupActivity.class);
-                startActivityForResult(intent,  1);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -66,50 +66,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public void writeToFile(){
-        try {
-            new Runnable(){
-                public void run() {
-                    while(true) {
-                        File direc = getBaseContext().getFilesDir();
-                        File file = new File(direc, "location.txt");
-                        String loc = latitude + ", " + latitude;
-                        try {
-                            OutputStreamWriter writer = new OutputStreamWriter(getBaseContext().openFileOutput("location.txt", Context.MODE_PRIVATE));
-                            if(loc == null){
-                                loc = "Lat: NaN, Lng: NaN";
-                            }
-                            writer.write(loc);
-                            writer.close();
-                            Log.d(TAG, "run: Done!");
-                            Thread.sleep(30000);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            };
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public File checkFile(File file){
-        if(!file.exists()){
-            file.mkdir();
-        }
-        return file;
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
+        if (resultCode == RESULT_OK) {
             mMap.clear();
             Bundle bundle = data.getBundleExtra("Bundle");
             group = bundle.getParcelableArrayList("Group");
-            for(int i = 0; i < group.size(); i++){
+            for (int i = 0; i < group.size(); i++) {
                 Log.d(TAG, "onActivityResult: " + group.get(i).getName() + ", " + group.get(i).getLatitude() + ", " + group.get(i).getLongitude());
                 LatLng latLng = new LatLng(group.get(i).getLatitude(), group.get(i).getLongitude());
                 mMap.addMarker(new MarkerOptions().position(latLng)).setTitle(group.get(i).getName());
@@ -117,7 +80,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public void moveCameraToCurrentLocation(){
+    public void moveCameraToCurrentLocation() {
         LatLng latLng = new LatLng(latitude, longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
@@ -139,26 +102,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         moveCameraToCurrentLocation();
     }
 
-    private void getCurrentLocation(){
+    private void getCurrentLocation() {
+//        Log.d(TAG, "onLocationChanged: Longitude: " + longitude + ", Latitude: " + latitude);
+//        LatLng latLng = new LatLng(latitude, longitude);
+//        mMap.clear();
+//        mMap.addMarker(new MarkerOptions().position(latLng)).setTitle("You're here!");
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                mMap.clear();
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
-                Log.d(TAG, "onLocationChanged: Longitude: " + longitude + ", Latitude: " + latitude);
-
-                LatLng latLng = new LatLng(latitude, longitude);
-                mMap.clear();
-                mMap.addMarker(new MarkerOptions().position(latLng)).setTitle("You're here!");
-                if(group != null) {
-                    for (int i = 0; i < group.size(); i++) {
-                        Log.d(TAG, "onActivityResult: " + group.get(i).getName() + ", " + group.get(i).getLatitude() + ", " + group.get(i).getLongitude());
+                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))).setTitle("You're here!");
+                if(group != null){
+                    for(int i = 0; i < group.size(); i++){
+                        Log.d(TAG, "onLocationChanged: " + group.get(i).getName());
                         LatLng latLng1 = new LatLng(group.get(i).getLatitude(), group.get(i).getLongitude());
                         mMap.addMarker(new MarkerOptions().position(latLng1)).setTitle(group.get(i).getName());
                     }
-//                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 }
+                Log.d(TAG, "onLocationChanged: YAY");
             }
 
             @Override
@@ -176,7 +140,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         };
-
+        
+        if (group != null) {
+            for (int i = 0; i < group.size(); i++) {
+                Log.d(TAG, "onActivityResult: " + group.get(i).getName() + ", " + group.get(i).getLatitude() + ", " + group.get(i).getLongitude());
+                LatLng latLng1 = new LatLng(group.get(i).getLatitude(), group.get(i).getLongitude());
+                mMap.addMarker(new MarkerOptions().position(latLng1)).setTitle(group.get(i).getName());
+            }
+//                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        }
+        
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }else{
@@ -184,6 +157,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             mMap.addMarker(new MarkerOptions().position(new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude())));
         }
-    }
-
+}
 }
